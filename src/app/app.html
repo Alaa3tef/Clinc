@@ -1,0 +1,40 @@
+@if (isAuthPage) {
+  <!-- Clean Fullscreen View for Login -->
+  <router-outlet></router-outlet>
+} @else {
+  <!-- Main Admin Layout with Sidebar, Header & Content -->
+  <div class="clinic-app-layout">
+    <app-sidebar></app-sidebar>
+    
+    <div class="clinic-main-wrapper">
+      <app-header></app-header>
+
+      <main class="clinic-content-area">
+        <router-outlet></router-outlet>
+      </main>
+
+      <!-- Key Features Footer Bar (as in UI design) -->
+      <footer class="clinic-footer-features">
+        <div class="features-title">
+          <i class="pi pi-sparkle"></i>
+          <strong>Key Features</strong>
+        </div>
+        <div class="features-scroll-list">
+          <span class="feature-tag"><i class="pi pi-users"></i> Patient Management</span>
+          <span class="feature-tag"><i class="pi pi-calendar"></i> Appointment Scheduling</span>
+          <span class="feature-tag"><i class="pi pi-box"></i> Treatment Packages</span>
+          <span class="feature-tag"><i class="pi pi-clock"></i> Session Tracking</span>
+          <span class="feature-tag"><i class="pi pi-cog"></i> Device Management</span>
+          <span class="feature-tag"><i class="pi pi-id-card"></i> Staff & Permissions</span>
+          <span class="feature-tag"><i class="pi pi-database"></i> Inventory</span>
+          <span class="feature-tag"><i class="pi pi-chart-line"></i> Reports & Analytics</span>
+          <span class="feature-tag"><i class="pi pi-building"></i> Multi-Branch</span>
+          <span class="feature-tag"><i class="pi pi-bell"></i> Reminders</span>
+        </div>
+        <div class="features-slogan">
+          <span>More Than a System... It's Your Beauty Business ♡</span>
+        </div>
+      </footer>
+    </div>
+  </div>
+}

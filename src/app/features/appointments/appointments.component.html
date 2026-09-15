@@ -1,0 +1,124 @@
+<div class="appointments-page">
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h1>{{ 'APPOINTMENTS.TITLE' | trans }}</h1>
+      <p>{{ 'APPOINTMENTS.SUBTITLE' | trans }}</p>
+    </div>
+  </div>
+
+  <!-- Appointments Main Grid: Calendar on Left, Quick Book on Right -->
+  <div class="appointments-layout">
+    <div class="clinic-card calendar-section">
+      <!-- Calendar Controls -->
+      <div class="calendar-controls">
+        <div class="month-selector">
+          <button class="nav-arrow"><i class="pi pi-chevron-left"></i></button>
+          <strong>{{ currentMonth() }}</strong>
+          <button class="nav-arrow"><i class="pi pi-chevron-right"></i></button>
+        </div>
+
+        <button class="today-btn">{{ 'APPOINTMENTS.TODAY' | trans }}</button>
+
+        <div class="view-toggles">
+          <button [class.active]="activeView() === 'Day'" (click)="activeView.set('Day')">{{ 'APPOINTMENTS.DAY' | trans }}</button>
+          <button [class.active]="activeView() === 'Week'" (click)="activeView.set('Week')">{{ 'APPOINTMENTS.WEEK' | trans }}</button>
+          <button [class.active]="activeView() === 'Month'" (click)="activeView.set('Month')">{{ 'APPOINTMENTS.MONTH' | trans }}</button>
+        </div>
+      </div>
+
+      <!-- Calendar Schedule Grid -->
+      <div class="schedule-table-wrapper">
+        <table class="schedule-table">
+          <thead>
+            <tr>
+              <th class="time-col"></th>
+              @for (day of daysOfWeek; track day.full) {
+                <th class="day-col">
+                  <div class="day-name">{{ day.name }}</div>
+                  <div class="day-number">{{ day.date }}</div>
+                </th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (slot of timeSlots; track slot) {
+              <tr>
+                <td class="time-cell">{{ slot }}</td>
+                @for (day of daysOfWeek; track day.full) {
+                  <td class="slot-cell">
+                    @if (scheduledEvents[day.full + '_' + slot]; as event) {
+                      <div class="event-pill" [style.background]="event.color">
+                        <strong>{{ event.patient }}</strong>
+                        <small>{{ event.treatment }}</small>
+                      </div>
+                    }
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Right Side: Quick Book Panel (as in UI design) -->
+    <div class="clinic-card quick-book-panel">
+      <h3>{{ 'APPOINTMENTS.QUICK_BOOK' | trans }}</h3>
+
+      <div class="form-group">
+        <label>{{ 'APPOINTMENTS.SELECT_PATIENT' | trans }}</label>
+        <select [(ngModel)]="selectedPatientName">
+          <option value="">-- Choose Patient --</option>
+          @for (p of clinic.patients(); track p.id) {
+            <option [value]="p.name">{{ p.name }} ({{ p.phone }})</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'APPOINTMENTS.SELECT_TREATMENT' | trans }}</label>
+        <select [(ngModel)]="selectedTreatmentName">
+          <option value="">-- Choose Treatment --</option>
+          @for (t of clinic.treatments(); track t.id) {
+            <option [value]="t.name">{{ t.name }} - {{ t.price }} EGP</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'APPOINTMENTS.SELECT_STAFF' | trans }}</label>
+        <select [(ngModel)]="selectedStaffName">
+          <option value="Dr. Sarah">Dr. Sarah (Doctor)</option>
+          <option value="Dr. Ahmed Hassan">Dr. Ahmed Hassan (Doctor)</option>
+          <option value="Nour El-Din">Nour El-Din (Technician)</option>
+        </select>
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" [(ngModel)]="selectedDate" />
+        </div>
+        <div class="form-group">
+          <label>Time</label>
+          <input type="time" [(ngModel)]="selectedTime" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'APPOINTMENTS.SELECT_ROOM' | trans }}</label>
+        <select [(ngModel)]="selectedRoom">
+          @for (room of rooms; track room) {
+            <option [value]="room">{{ room }}</option>
+          }
+        </select>
+      </div>
+
+      <button class="btn-primary book-submit-btn" (click)="bookQuickAppointment()">
+        <i class="pi pi-calendar-plus"></i>
+        <span>{{ 'APPOINTMENTS.BOOK_BTN' | trans }}</span>
+      </button>
+    </div>
+  </div>
+</div>

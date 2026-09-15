@@ -1,0 +1,119 @@
+.reports-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  h1 { font-size: 24px; font-weight: 800; }
+  p { color: var(--text-muted); font-size: 13.5px; margin-top: 4px; }
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .date-filter-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border: 1px solid var(--border-color);
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+
+    i { color: var(--primary); }
+  }
+}
+
+.reports-grid {
+  display: grid;
+  grid-template-columns: 1.8fr 1.2fr;
+  gap: 1.25rem;
+
+  @media (max-width: 1050px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.treatments-bars-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  .treatment-bar-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    .bar-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12.5px;
+
+      span { color: var(--text-main); font-weight: 500; }
+      strong { color: var(--text-muted); }
+    }
+
+    .progress-track {
+      height: 7px;
+      background: var(--bg-main);
+      border-radius: 10px;
+      overflow: hidden;
+
+      .progress-fill {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.5s ease-in-out;
+      }
+    }
+  }
+}
+
+.reports-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+
+  .kpi-card {
+    padding: 1.25rem;
+
+    .kpi-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .kpi-values {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-top: 6px;
+
+      h2 {
+        font-size: 22px;
+        font-weight: 800;
+      }
+
+      .trend-badge {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 6px;
+
+        &.positive { background: #eaf7ed; color: #2e7d32; }
+        &.negative { background: #fdebee; color: #c62828; }
+      }
+    }
+  }
+}

@@ -1,0 +1,144 @@
+<div class="dashboard-container">
+  <!-- Top Greeting & Promo Card -->
+  <div class="dashboard-header-row">
+    <div class="greeting-box">
+      <h1>{{ 'DASHBOARD.GREETING' | trans }}</h1>
+      <p>{{ 'DASHBOARD.SUBGREETING' | trans }}</p>
+    </div>
+
+    <!-- Healthy Skin Banner Card -->
+    <div class="promo-banner-card">
+      <div class="banner-content">
+        <h3>{{ 'DASHBOARD.BANNER_TITLE' | trans }}</h3>
+        <a routerLink="/treatments" class="banner-link-btn">
+          {{ 'DASHBOARD.VIEW_TREATMENTS' | trans }} <i class="pi pi-arrow-right"></i>
+        </a>
+      </div>
+      <div class="banner-overlay-flower">
+        <i class="pi pi-heart"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 Stat Metric Cards -->
+  <div class="stats-row">
+    <!-- Card 1: Total Patients -->
+    <div class="stat-card">
+      <div class="stat-icon-wrapper icon-users">
+        <i class="pi pi-users"></i>
+      </div>
+      <div class="stat-data">
+        <span class="stat-title">{{ 'DASHBOARD.TOTAL_PATIENTS' | trans }}</span>
+        <div class="stat-figure">
+          <h2>{{ clinic.kpis().totalPatients | number }}</h2>
+          <span class="trend-badge positive">
+            <i class="pi pi-arrow-up-right"></i> {{ clinic.kpis().patientsGrowth }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Today's Appointments -->
+    <div class="stat-card">
+      <div class="stat-icon-wrapper icon-appointments">
+        <i class="pi pi-calendar"></i>
+      </div>
+      <div class="stat-data">
+        <span class="stat-title">{{ 'DASHBOARD.TODAYS_APPOINTMENTS' | trans }}</span>
+        <div class="stat-figure">
+          <h2>{{ clinic.kpis().todayAppointments }}</h2>
+          <span class="trend-badge positive">
+            <i class="pi pi-arrow-up-right"></i> {{ clinic.kpis().appointmentsDiff }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Today's Revenue -->
+    <div class="stat-card">
+      <div class="stat-icon-wrapper icon-revenue">
+        <i class="pi pi-wallet"></i>
+      </div>
+      <div class="stat-data">
+        <span class="stat-title">{{ 'DASHBOARD.TODAYS_REVENUE' | trans }}</span>
+        <div class="stat-figure">
+          <h2>{{ clinic.kpis().todayRevenue | number }} <small>{{ 'COMMON.EGP' | trans }}</small></h2>
+          <span class="trend-badge positive">
+            <i class="pi pi-arrow-up-right"></i> {{ clinic.kpis().revenueGrowth }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4: Pending Payments -->
+    <div class="stat-card">
+      <div class="stat-icon-wrapper icon-pending">
+        <i class="pi pi-clock"></i>
+      </div>
+      <div class="stat-data">
+        <span class="stat-title">{{ 'DASHBOARD.PENDING_PAYMENTS' | trans }}</span>
+        <div class="stat-figure">
+          <h2>{{ clinic.kpis().pendingPayments | number }} <small>{{ 'COMMON.EGP' | trans }}</small></h2>
+          <span class="trend-badge negative">
+            <i class="pi pi-arrow-down-right"></i> {{ clinic.kpis().pendingDiff }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts & Appointments Grid -->
+  <div class="dashboard-grid">
+    <!-- Revenue Overview Chart -->
+    <div class="clinic-card revenue-card">
+      <div class="card-top-bar">
+        <h3>{{ 'DASHBOARD.REVENUE_OVERVIEW' | trans }}</h3>
+        <span class="time-filter-pill">{{ 'DASHBOARD.THIS_YEAR' | trans }}</span>
+      </div>
+      <div class="chart-wrapper">
+        <p-chart type="line" [data]="revenueData" [options]="revenueOptions" height="260px"></p-chart>
+      </div>
+    </div>
+
+    <!-- Treatment Categories Doughnut Chart -->
+    <div class="clinic-card categories-card">
+      <div class="card-top-bar">
+        <h3>{{ 'DASHBOARD.TREATMENT_CATEGORIES' | trans }}</h3>
+      </div>
+      <div class="doughnut-wrapper">
+        <div class="doughnut-center-info">
+          <span>Total</span>
+          <strong>{{ categoryTotal | number }}%</strong>
+        </div>
+        <p-chart type="doughnut" [data]="categoryData" [options]="categoryOptions" height="190px"></p-chart>
+      </div>
+      <div class="custom-legend-grid">
+        @for (category of clinic.categoryPoints(); track category.categoryName; let index = $index) {
+          <div class="legend-chip"><span class="dot" [class]="'d' + (index + 1)"></span> {{ category.categoryName }} <span>{{ category.percentage }}%</span></div>
+        }
+      </div>
+    </div>
+
+    <!-- Upcoming Appointments List -->
+    <div class="clinic-card upcoming-card">
+      <div class="card-top-bar">
+        <h3>{{ 'DASHBOARD.UPCOMING_APPOINTMENTS' | trans }}</h3>
+        <a routerLink="/appointments" class="view-all-text">{{ 'DASHBOARD.VIEW_ALL' | trans }}</a>
+      </div>
+      <div class="upcoming-list">
+        @for (apt of clinic.upcomingAppointments(); track apt.id) {
+          <div class="appointment-row">
+            <span class="time-tag">{{ apt.scheduledAt | date: 'shortTime' }}</span>
+            <div class="patient-details">
+              <strong>{{ apt.patientName }}</strong>
+              <small>{{ apt.treatmentName }}</small>
+            </div>
+            <span class="status-badge" [ngClass]="apt.status.toLowerCase()">
+              {{ apt.status }}
+            </span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

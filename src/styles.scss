@@ -1,0 +1,257 @@
+@import "primeicons/primeicons.css";
+
+:root {
+  /* Lumière Aesthetic Palette */
+  --primary: #8b4356;
+  --primary-hover: #722f37;
+  --primary-light: #fbeff2;
+  --primary-soft: #f7e6eb;
+  
+  --sidebar-bg: #4a212f;
+  --sidebar-hover: #5c2c3d;
+  --sidebar-active: #8b4356;
+  --sidebar-text: #f0e6e8;
+  
+  --bg-main: #fbf7f5;
+  --bg-card: #ffffff;
+  --bg-subtle: #f8f1ee;
+  
+  --text-main: #2d2627;
+  --text-muted: #7e7375;
+  --text-light: #a4979a;
+  
+  --border-color: #eee4e5;
+  --border-subtle: #f5ebe8;
+  
+  --badge-green-bg: #eaf7ed;
+  --badge-green-text: #237b38;
+  --badge-gold-bg: #fef7e6;
+  --badge-gold-text: #b37400;
+  --badge-red-bg: #fdebee;
+  --badge-red-text: #c62828;
+  --badge-blue-bg: #e6f3fd;
+  --badge-blue-text: #1565c0;
+  --badge-vip-bg: #fff0f5;
+  --badge-vip-text: #9c27b0;
+
+  --shadow-sm: 0 2px 8px rgba(74, 33, 47, 0.04);
+  --shadow-md: 0 6px 20px rgba(74, 33, 47, 0.06);
+  --shadow-lg: 0 12px 32px rgba(74, 33, 47, 0.08);
+  
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+}
+
+/* Reset & Base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', 'Cairo', sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* RTL Support */
+[dir="rtl"] {
+  font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+/* Cards */
+.clinic-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+  }
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+
+  &.active, &.confirmed, &.paid, &.completed {
+    background-color: var(--badge-green-bg);
+    color: var(--badge-green-text);
+  }
+
+  &.pending, &.warning, &.maintenance {
+    background-color: var(--badge-gold-bg);
+    color: var(--badge-gold-text);
+  }
+
+  &.inactive, &.cancelled, &.danger {
+    background-color: var(--badge-red-bg);
+    color: var(--badge-red-text);
+  }
+
+  &.info, &.doctor, &.laser {
+    background-color: var(--badge-blue-bg);
+    color: var(--badge-blue-text);
+  }
+
+  &.vip {
+    background-color: var(--badge-vip-bg);
+    color: var(--badge-vip-text);
+    border: 1px solid #f3c2d4;
+  }
+}
+
+/* Buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+
+  &:hover {
+    background-color: var(--primary-hover);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #fff;
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 9px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: var(--bg-subtle);
+    border-color: #ddcfd1;
+  }
+}
+
+.btn-outline-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: var(--primary-light);
+  }
+}
+
+/* Inputs */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 1rem;
+
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  input, select, textarea {
+    padding: 10px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+
+    &:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(139, 67, 86, 0.1);
+    }
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d6cbcd;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #b0a3a6;
+}
+
+/* Hide PrimeUI / PrimeNG License Notice Banner */
+[class*="license"],
+[id*="license"],
+[class*="primeui-license"],
+[id*="primeui-license"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+

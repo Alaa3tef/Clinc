@@ -1,0 +1,127 @@
+<div class="payments-page">
+  <div class="page-header">
+    <div>
+      <h1>{{ 'PAYMENTS.TITLE' | trans }}</h1>
+      <p>{{ 'PAYMENTS.SUBTITLE' | trans }}</p>
+    </div>
+    <button class="btn-primary" (click)="openAddDialog()">
+      <i class="pi pi-plus"></i>
+      <span>{{ 'PAYMENTS.NEW_PAYMENT' | trans }}</span>
+    </button>
+  </div>
+
+  <div class="payments-layout">
+    <!-- Invoices Table Section -->
+    <div class="clinic-card table-section">
+      <div class="table-search-bar">
+        <i class="pi pi-search"></i>
+        <input 
+          type="text" 
+          [placeholder]="'PAYMENTS.SEARCH_PLACEHOLDER' | trans" 
+          [ngModel]="searchQuery()" 
+          (ngModelChange)="searchQuery.set($event)" 
+        />
+      </div>
+
+      <div class="custom-table-wrapper">
+        <table class="clinic-table">
+          <thead>
+            <tr>
+              <th>{{ 'PAYMENTS.INVOICE_NO' | trans }}</th>
+              <th>{{ 'PAYMENTS.PATIENT' | trans }}</th>
+              <th>{{ 'PAYMENTS.DATE' | trans }}</th>
+              <th>{{ 'PAYMENTS.AMOUNT' | trans }}</th>
+              <th>{{ 'PAYMENTS.STATUS' | trans }}</th>
+              <th>{{ 'COMMON.ACTIONS' | trans }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (inv of filteredInvoices(); track inv.id) {
+              <tr>
+                <td><strong>{{ inv.invoiceNo }}</strong></td>
+                <td>{{ inv.patientName }}</td>
+                <td>{{ inv.date }}</td>
+                <td>
+                  <strong>{{ inv.amount | number }} {{ 'COMMON.EGP' | trans }}</strong>
+                </td>
+                <td>
+                  <span class="status-badge" [ngClass]="inv.status.toLowerCase()">
+                    {{ inv.status }}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn-outline-primary btn-sm">
+                    <i class="pi pi-print"></i> Print
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Payment Summary Card (as seen in screenshot) -->
+    <div class="clinic-card summary-card">
+      <h3>{{ 'PAYMENTS.PAYMENT_SUMMARY' | trans }}</h3>
+
+      <div class="summary-metric">
+        <label>{{ 'PAYMENTS.TOTAL_AMOUNT' | trans }}</label>
+        <span class="amount-val main">142,850 <small>{{ 'COMMON.EGP' | trans }}</small></span>
+      </div>
+
+      <div class="summary-metric">
+        <label>{{ 'PAYMENTS.PAID_AMOUNT' | trans }}</label>
+        <span class="amount-val paid">98,600 <small>{{ 'COMMON.EGP' | trans }}</small></span>
+      </div>
+
+      <div class="summary-metric">
+        <label>{{ 'PAYMENTS.PENDING_AMOUNT' | trans }}</label>
+        <span class="amount-val pending">44,250 <small>{{ 'COMMON.EGP' | trans }}</small></span>
+      </div>
+
+      <button class="btn-primary full-width mt-3">
+        {{ 'PAYMENTS.VIEW_ALL_INVOICES' | trans }}
+      </button>
+    </div>
+  </div>
+
+  <!-- New Payment Dialog -->
+  <p-dialog 
+    [header]="'PAYMENTS.NEW_PAYMENT' | trans" 
+    [visible]="showAddDialog()" 
+    (visibleChange)="showAddDialog.set($event)"
+    [modal]="true" 
+    [style]="{ width: '420px' }"
+  >
+    <div class="dialog-content">
+      <div class="form-group">
+        <label>{{ 'PAYMENTS.PATIENT' | trans }} *</label>
+        <select [(ngModel)]="newInvoice.patientName">
+          <option value="">-- Choose Patient --</option>
+          @for (p of clinic.patients(); track p.id) {
+            <option [value]="p.name">{{ p.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'PAYMENTS.AMOUNT' | trans }} (EGP) *</label>
+        <input type="number" [(ngModel)]="newInvoice.amount" />
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'PAYMENTS.STATUS' | trans }}</label>
+        <select [(ngModel)]="newInvoice.status">
+          <option value="Paid">Paid</option>
+          <option value="Pending">Pending</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="dialog-footer">
+      <button class="btn-secondary" (click)="showAddDialog.set(false)">{{ 'COMMON.CANCEL' | trans }}</button>
+      <button class="btn-primary" (click)="saveInvoice()">{{ 'COMMON.SAVE' | trans }}</button>
+    </div>
+  </p-dialog>
+</div>

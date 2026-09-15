@@ -1,0 +1,104 @@
+<div class="staff-page">
+  <div class="page-header">
+    <div>
+      <h1>{{ 'STAFF.TITLE' | trans }}</h1>
+      <p>{{ 'STAFF.SUBTITLE' | trans }}</p>
+    </div>
+    <button class="btn-primary" (click)="openAddDialog()">
+      <i class="pi pi-plus"></i>
+      <span>{{ 'STAFF.ADD_STAFF' | trans }}</span>
+    </button>
+  </div>
+
+  <div class="clinic-card">
+    <div class="table-search-bar">
+      <i class="pi pi-search"></i>
+      <input 
+        type="text" 
+        [placeholder]="'STAFF.SEARCH_STAFF' | trans" 
+        [ngModel]="searchQuery()" 
+        (ngModelChange)="searchQuery.set($event)" 
+      />
+    </div>
+
+    <div class="custom-table-wrapper">
+      <table class="clinic-table">
+        <thead>
+          <tr>
+            <th>{{ 'STAFF.NAME' | trans }}</th>
+            <th>{{ 'STAFF.ROLE' | trans }}</th>
+            <th>{{ 'STAFF.PHONE' | trans }}</th>
+            <th>{{ 'STAFF.STATUS' | trans }}</th>
+            <th>{{ 'COMMON.ACTIONS' | trans }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (member of filteredStaff(); track member.id) {
+            <tr>
+              <td>
+                <div class="staff-name-cell">
+                  <div class="staff-avatar-circle">
+                    {{ member.name.charAt(0) }}
+                  </div>
+                  <strong>{{ member.name }}</strong>
+                </div>
+              </td>
+              <td>
+                <span class="role-badge" [ngClass]="member.role.toLowerCase()">
+                  {{ member.role }}
+                </span>
+              </td>
+              <td>{{ member.phone }}</td>
+              <td>
+                <span class="status-badge" [ngClass]="member.status.toLowerCase()">
+                  {{ member.status }}
+                </span>
+              </td>
+              <td>
+                <button class="btn-outline-primary btn-sm">
+                  <i class="pi pi-user-edit"></i> Edit
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Add Staff Dialog -->
+  <p-dialog 
+    [header]="'STAFF.ADD_STAFF' | trans" 
+    [visible]="showAddDialog()" 
+    (visibleChange)="showAddDialog.set($event)"
+    [modal]="true" 
+    [style]="{ width: '420px' }"
+  >
+    <div class="dialog-content">
+      <div class="form-group">
+        <label>{{ 'STAFF.NAME' | trans }} *</label>
+        <input type="text" [(ngModel)]="newStaff.name" placeholder="Full name" />
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'STAFF.ROLE' | trans }}</label>
+        <select [(ngModel)]="newStaff.role">
+          <option value="Doctor">Doctor</option>
+          <option value="Technician">Technician</option>
+          <option value="Nurse">Nurse</option>
+          <option value="Receptionist">Receptionist</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'STAFF.PHONE' | trans }} *</label>
+        <input type="text" [(ngModel)]="newStaff.phone" placeholder="010XXXXXXXX" />
+      </div>
+    </div>
+
+    <div class="dialog-footer">
+      <button class="btn-secondary" (click)="showAddDialog.set(false)">{{ 'COMMON.CANCEL' | trans }}</button>
+      <button class="btn-primary" (click)="saveStaff()">{{ 'COMMON.SAVE' | trans }}</button>
+    </div>
+  </p-dialog>
+</div>

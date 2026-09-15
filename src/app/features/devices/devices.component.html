@@ -1,0 +1,127 @@
+<div class="devices-page">
+  <div class="page-header">
+    <div>
+      <h1>{{ 'DEVICES.TITLE' | trans }}</h1>
+      <p>{{ 'DEVICES.SUBTITLE' | trans }}</p>
+    </div>
+    <button class="btn-primary" (click)="openAddDialog()">
+      <i class="pi pi-plus"></i>
+      <span>{{ 'DEVICES.ADD_DEVICE' | trans }}</span>
+    </button>
+  </div>
+
+  <div class="devices-layout">
+    <!-- Devices Table -->
+    <div class="clinic-card table-section">
+      <div class="custom-table-wrapper">
+        <table class="clinic-table">
+          <thead>
+            <tr>
+              <th>{{ 'DEVICES.DEVICE_NAME' | trans }}</th>
+              <th>{{ 'DEVICES.MANUFACTURER' | trans }}</th>
+              <th>{{ 'DEVICES.MODEL' | trans }}</th>
+              <th>{{ 'DEVICES.ROOM' | trans }}</th>
+              <th>{{ 'DEVICES.STATUS' | trans }}</th>
+              <th>{{ 'COMMON.ACTIONS' | trans }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (dev of clinic.devices(); track dev.id) {
+              <tr>
+                <td>
+                  <div class="device-cell">
+                    <div class="device-icon">
+                      <i class="pi pi-bolt"></i>
+                    </div>
+                    <strong>{{ dev.name }}</strong>
+                  </div>
+                </td>
+                <td>{{ dev.manufacturer }}</td>
+                <td>{{ dev.model }}</td>
+                <td>{{ dev.room }}</td>
+                <td>
+                  @if (dev.isMaintenanceDue) {
+                    <span class="status-badge maintenance">
+                      <i class="pi pi-exclamation-triangle"></i> {{ dev.maintenanceStatus }}
+                    </span>
+                  } @else {
+                    <span class="status-badge active">
+                      {{ dev.maintenanceStatus }}
+                    </span>
+                  }
+                </td>
+                <td>
+                  <button class="btn-outline-primary btn-sm">
+                    <i class="pi pi-wrench"></i> Service
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Maintenance Due Notice Card (as shown in design) -->
+    <div class="clinic-card maintenance-card">
+      <div class="alert-icon-top">
+        <i class="pi pi-bell"></i>
+      </div>
+      <h4>Maintenance Due</h4>
+      <div class="device-alert-box">
+        <strong>CO2 Laser</strong>
+        <p>UltraPulse • Room 3</p>
+        <span class="due-tag">Due in 5 Days</span>
+      </div>
+      <div class="device-alert-box secondary">
+        <strong>Diode Laser</strong>
+        <p>MCL30 • Room 1</p>
+        <span class="due-tag info">Due in 15 Days</span>
+      </div>
+      <button class="btn-primary full-width mt-3">
+        <i class="pi pi-calendar-plus"></i> Schedule Maintenance
+      </button>
+    </div>
+  </div>
+
+  <!-- Add Device Dialog -->
+  <p-dialog 
+    [header]="'DEVICES.ADD_DEVICE' | trans" 
+    [visible]="showAddDialog()" 
+    (visibleChange)="showAddDialog.set($event)"
+    [modal]="true" 
+    [style]="{ width: '420px' }"
+  >
+    <div class="dialog-content">
+      <div class="form-group">
+        <label>{{ 'DEVICES.DEVICE_NAME' | trans }} *</label>
+        <input type="text" [(ngModel)]="newDevice.name" placeholder="e.g. Candela GentleMax Pro" />
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>{{ 'DEVICES.MANUFACTURER' | trans }}</label>
+          <input type="text" [(ngModel)]="newDevice.manufacturer" placeholder="Alma / Candela" />
+        </div>
+        <div class="form-group">
+          <label>{{ 'DEVICES.MODEL' | trans }}</label>
+          <input type="text" [(ngModel)]="newDevice.model" placeholder="Model code" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'DEVICES.ROOM' | trans }}</label>
+        <select [(ngModel)]="newDevice.room">
+          <option value="Room 1">Room 1</option>
+          <option value="Room 2">Room 2</option>
+          <option value="Room 3">Room 3</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="dialog-footer">
+      <button class="btn-secondary" (click)="showAddDialog.set(false)">{{ 'COMMON.CANCEL' | trans }}</button>
+      <button class="btn-primary" (click)="saveDevice()">{{ 'COMMON.SAVE' | trans }}</button>
+    </div>
+  </p-dialog>
+</div>

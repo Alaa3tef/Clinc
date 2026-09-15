@@ -1,0 +1,140 @@
+<div class="sessions-page">
+  <!-- Back Button & Header -->
+  <div class="session-top-nav">
+    <button class="btn-back">
+      <i class="pi pi-arrow-left"></i>
+      <span>{{ 'SESSIONS.BACK_TO_SESSIONS' | trans }}</span>
+    </button>
+  </div>
+
+  <!-- Session Patient Banner Card -->
+  <div class="clinic-card session-hero-card">
+    <div class="patient-main-cell">
+      <img [src]="session().patientPhoto" alt="Patient" class="session-avatar" />
+      <div class="session-meta">
+        <h2>{{ session().patientName }}</h2>
+        <p>{{ session().treatmentName }} • Session {{ session().sessionNumber }}/{{ session().totalSessions }} • {{ session().date }} {{ session().time }}</p>
+      </div>
+    </div>
+
+    <div class="session-actions">
+      <button class="btn-outline-primary">
+        <i class="pi pi-history"></i> Repeat Last Parameters
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabs Navigation -->
+  <div class="session-tabs-nav">
+    <button [class.active]="activeTab() === 'details'" (click)="activeTab.set('details')">
+      {{ 'SESSIONS.SESSION_DETAILS' | trans }}
+    </button>
+    <button [class.active]="activeTab() === 'parameters'" (click)="activeTab.set('parameters')">
+      {{ 'SESSIONS.PARAMETERS' | trans }}
+    </button>
+    <button [class.active]="activeTab() === 'beforeAfter'" (click)="activeTab.set('beforeAfter')">
+      {{ 'SESSIONS.BEFORE_AFTER' | trans }}
+    </button>
+    <button [class.active]="activeTab() === 'notes'" (click)="activeTab.set('notes')">
+      {{ 'SESSIONS.NOTES' | trans }}
+    </button>
+  </div>
+
+  <!-- Tab Content Card -->
+  <div class="clinic-card session-content-card">
+    <!-- Tab 1: Details -->
+    @if (activeTab() === 'details') {
+      <div class="info-section">
+        <h3>{{ 'SESSIONS.SESSION_INFO' | trans }}</h3>
+        <div class="info-grid-2">
+          <div class="field-item">
+            <label>{{ 'SESSIONS.AREA' | trans }}</label>
+            <span>{{ session().area }}</span>
+          </div>
+          <div class="field-item">
+            <label>{{ 'SESSIONS.DEVICE' | trans }}</label>
+            <span>{{ session().deviceName }}</span>
+          </div>
+          <div class="field-item">
+            <label>{{ 'SESSIONS.TECHNICIAN' | trans }}</label>
+            <span>{{ session().technicianName }}</span>
+          </div>
+          <div class="field-item">
+            <label>{{ 'SESSIONS.ROOM' | trans }}</label>
+            <span>{{ session().room }}</span>
+          </div>
+          <div class="field-item">
+            <label>{{ 'SESSIONS.DURATION' | trans }}</label>
+            <span>{{ session().durationMinutes }} min</span>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Tab 2: Parameters (Featured in screenshot) -->
+    @if (activeTab() === 'parameters') {
+      <div class="parameters-section">
+        <h3>{{ 'SESSIONS.PARAMETERS' | trans }}</h3>
+        <div class="parameters-tiles-grid">
+          <div class="param-tile">
+            <span class="param-label">{{ 'SESSIONS.ENERGY' | trans }}</span>
+            <span class="param-val highlight">{{ session().parameters.energy }}</span>
+          </div>
+          <div class="param-tile">
+            <span class="param-label">{{ 'SESSIONS.PULSE_DURATION' | trans }}</span>
+            <span class="param-val">{{ session().parameters.pulseDuration }}</span>
+          </div>
+          <div class="param-tile">
+            <span class="param-label">{{ 'SESSIONS.FREQUENCY' | trans }}</span>
+            <span class="param-val">{{ session().parameters.frequency }}</span>
+          </div>
+          <div class="param-tile">
+            <span class="param-label">{{ 'SESSIONS.SPOT_SIZE' | trans }}</span>
+            <span class="param-val">{{ session().parameters.spotSize }}</span>
+          </div>
+          <div class="param-tile">
+            <span class="param-label">{{ 'SESSIONS.COOLING' | trans }}</span>
+            <span class="param-val">{{ session().parameters.coolingLevel }}</span>
+          </div>
+          <div class="param-tile">
+            <span class="param-label">{{ 'SESSIONS.SKIN_TYPE' | trans }}</span>
+            <span class="param-val">{{ session().parameters.skinType }}</span>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Tab 3: Before & After -->
+    @if (activeTab() === 'beforeAfter') {
+      <div class="before-after-section">
+        <div class="photos-container">
+          <div class="photo-card">
+            <span class="photo-badge">Before</span>
+            <img src="https://images.unsplash.com/photo-1512290900672-1f5be634354a?w=450&auto=format&fit=crop&q=80" alt="Before treatment" />
+          </div>
+          <div class="photo-card">
+            <span class="photo-badge after">After</span>
+            <img src="https://images.unsplash.com/photo-1512290900672-1f5be634354a?w=450&auto=format&fit=crop&q=80" alt="After treatment" />
+          </div>
+        </div>
+        <div class="upload-action">
+          <button class="btn-primary">
+            <i class="pi pi-upload"></i>
+            <span>{{ 'SESSIONS.UPLOAD_PHOTOS' | trans }}</span>
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- Tab 4: Notes -->
+    @if (activeTab() === 'notes') {
+      <div class="notes-section">
+        <label>Clinical Observations & Post-Care:</label>
+        <textarea rows="5" class="notes-textarea" [ngModel]="session().notes"></textarea>
+        <button class="btn-primary" style="align-self: flex-start; margin-top: 10px;">
+          <i class="pi pi-save"></i> Save Notes
+        </button>
+      </div>
+    }
+  </div>
+</div>

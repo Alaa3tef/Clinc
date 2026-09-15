@@ -1,0 +1,196 @@
+<div class="patients-page">
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h1>{{ 'PATIENTS.TITLE' | trans }}</h1>
+      <p>{{ 'PATIENTS.SUBTITLE' | trans }}</p>
+    </div>
+    <button class="btn-primary" (click)="openAddPatient()">
+      <i class="pi pi-plus"></i>
+      <span>{{ 'PATIENTS.ADD_PATIENT' | trans }}</span>
+    </button>
+  </div>
+
+  <!-- Main Content Layout (Table on left, Details card on right) -->
+  <div class="patients-layout">
+    <!-- Left: Search & Table -->
+    <div class="clinic-card table-section">
+      <div class="table-search-bar">
+        <i class="pi pi-search"></i>
+        <input
+          type="text"
+          [placeholder]="'PATIENTS.SEARCH_PLACEHOLDER' | trans"
+          [ngModel]="searchQuery()"
+          (ngModelChange)="searchQuery.set($event)"
+        />
+      </div>
+
+      <div class="custom-table-wrapper">
+        <table class="clinic-table">
+          <thead>
+            <tr>
+              <th>{{ 'PATIENTS.NAME' | trans }}</th>
+              <th>{{ 'PATIENTS.PHONE' | trans }}</th>
+              <th>{{ 'PATIENTS.EMAIL' | trans }}</th>
+              <th>{{ 'PATIENTS.LAST_VISIT' | trans }}</th>
+              <th>{{ 'PATIENTS.STATUS' | trans }}</th>
+              <th>{{ 'PATIENTS.ACTIONS' | trans }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of filteredPatients(); track p.id) {
+              <tr [class.selected]="selectedPatient()?.id === p.id" (click)="selectPatient(p)">
+                <td>
+                  <div class="patient-cell">
+                    <span class="user-avatar-mini">{{ p.name.charAt(0) }}</span>
+                    <strong>{{ p.name }}</strong>
+                  </div>
+                </td>
+                <td>{{ p.phone }}</td>
+                <td>{{ p.email }}</td>
+                <td>{{ p.lastVisit }}</td>
+                <td>
+                  <span class="status-badge" [ngClass]="p.status.toLowerCase()">
+                    {{ p.status }}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn-icon" (click)="$event.stopPropagation(); selectPatient(p)">
+                    <i class="pi pi-chevron-right"></i>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-footer">
+        <span>{{ 'PATIENTS.TOTAL_PATIENTS_COUNT' | trans }}</span>
+        <div class="pagination-pills">
+          <button class="page-pill active">1</button>
+          <button class="page-pill">2</button>
+          <button class="page-pill">3</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Patient Detail Card (as shown in UI design) -->
+    @if (selectedPatient(); as patient) {
+      <div class="clinic-card patient-profile-card">
+        <div class="profile-top">
+          @if (patient.avatar) {
+            <img [src]="patient.avatar" alt="Avatar" class="profile-pic" />
+          } @else {
+            <div class="profile-pic profile-pic-placeholder" aria-hidden="true">
+              <i class="pi pi-user"></i>
+            </div>
+          }
+          <h3>{{ patient.name }}</h3>
+          <div class="profile-badges">
+            <span class="status-badge active">{{ patient.status }}</span>
+            @if (patient.isVip) {
+              <span class="status-badge vip">VIP</span>
+            }
+          </div>
+        </div>
+
+        <div class="profile-contacts">
+          <div class="contact-item">
+            <i class="pi pi-phone"></i>
+            <span>{{ patient.phone }}</span>
+          </div>
+          <div class="contact-item">
+            <i class="pi pi-envelope"></i>
+            <span>{{ patient.email }}</span>
+          </div>
+        </div>
+
+        <!-- Detail Tabs -->
+        <div class="detail-tabs">
+          <button [class.active]="activeTab() === 'personal'" (click)="activeTab.set('personal')">
+            <i class="pi pi-user"></i> {{ 'PATIENTS.TABS.PERSONAL' | trans }}
+          </button>
+          <button [class.active]="activeTab() === 'medical'" (click)="activeTab.set('medical')">
+            <i class="pi pi-file"></i> {{ 'PATIENTS.TABS.MEDICAL' | trans }}
+          </button>
+          <button [class.active]="activeTab() === 'treatments'" (click)="activeTab.set('treatments')">
+            <i class="pi pi-heart"></i> {{ 'PATIENTS.TABS.TREATMENTS' | trans }}
+          </button>
+          <button [class.active]="activeTab() === 'appointments'" (click)="activeTab.set('appointments')">
+            <i class="pi pi-calendar"></i> {{ 'PATIENTS.TABS.APPOINTMENTS' | trans }}
+          </button>
+          <button [class.active]="activeTab() === 'payments'" (click)="activeTab.set('payments')">
+            <i class="pi pi-credit-card"></i> {{ 'PATIENTS.TABS.PAYMENTS' | trans }}
+          </button>
+          <button [class.active]="activeTab() === 'notes'" (click)="activeTab.set('notes')">
+            <i class="pi pi-comment"></i> {{ 'PATIENTS.TABS.NOTES' | trans }}
+          </button>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-panel-body">
+          @if (activeTab() === 'personal') {
+            <div class="info-grid">
+              <div class="info-row"><label>Age:</label> <span>{{ patient.age || 28 }} yrs</span></div>
+              <div class="info-row"><label>Gender:</label> <span>{{ patient.gender || 'Female' }}</span></div>
+              <div class="info-row"><label>Address:</label> <span>{{ patient.address || 'Cairo, Egypt' }}</span></div>
+              <div class="info-row"><label>Total Visits:</label> <span>{{ patient.totalVisits || 8 }}</span></div>
+            </div>
+          } @else if (activeTab() === 'medical') {
+            <div class="medical-list">
+              <div class="med-tag"><i class="pi pi-check-circle"></i> Fitzpatrick Skin Type III</div>
+              <div class="med-tag"><i class="pi pi-check-circle"></i> No known drug allergies</div>
+              <div class="med-tag"><i class="pi pi-check-circle"></i> Completed 4 Laser sessions</div>
+            </div>
+          } @else {
+            <p class="tab-placeholder">View historical data for {{ patient.name }}.</p>
+          }
+        </div>
+
+        <button class="btn-primary edit-profile-btn">
+          <i class="pi pi-user-edit"></i>
+          <span>{{ 'PATIENTS.EDIT_PROFILE' | trans }}</span>
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- Add Patient Dialog -->
+  <p-dialog
+    [header]="'PATIENTS.ADD_PATIENT' | trans"
+    [visible]="showAddDialog()"
+    (visibleChange)="showAddDialog.set($event)"
+    [modal]="true"
+    [style]="{ width: '450px' }"
+  >
+    <div class="dialog-content">
+      <div class="form-group">
+        <label>{{ 'PATIENTS.NAME' | trans }} *</label>
+        <input type="text" [(ngModel)]="newPatient.name" placeholder="Full patient name" />
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'PATIENTS.PHONE' | trans }} *</label>
+        <input type="text" [(ngModel)]="newPatient.phone" placeholder="010XXXXXXXX" />
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'PATIENTS.EMAIL' | trans }}</label>
+        <input type="email" [(ngModel)]="newPatient.email" placeholder="patient@mail.com" />
+      </div>
+
+      <div class="form-group checkbox-row">
+        <label>
+          <input type="checkbox" [(ngModel)]="newPatient.isVip" />
+          <span>Mark as VIP Patient</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="dialog-footer">
+      <button class="btn-secondary" (click)="showAddDialog.set(false)">{{ 'COMMON.CANCEL' | trans }}</button>
+      <button class="btn-primary" (click)="savePatient()">{{ 'COMMON.SAVE' | trans }}</button>
+    </div>
+  </p-dialog>
+</div>

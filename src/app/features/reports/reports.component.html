@@ -1,0 +1,85 @@
+<div class="reports-page">
+  <div class="page-header">
+    <div>
+      <h1>{{ 'REPORTS.TITLE' | trans }}</h1>
+      <p>{{ 'REPORTS.SUBTITLE' | trans }}</p>
+    </div>
+    <div class="header-actions">
+      <div class="date-filter-pill">
+        <i class="pi pi-calendar"></i>
+        <span>01/01/2025 - 30/06/2025</span>
+      </div>
+      <button class="btn-primary">
+        <i class="pi pi-download"></i>
+        <span>{{ 'REPORTS.EXPORT' | trans }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Charts Layout -->
+  <div class="reports-grid">
+    <!-- Bar Chart: Revenue Report -->
+    <div class="clinic-card revenue-chart-card">
+      <div class="card-top-bar">
+        <h3>{{ 'REPORTS.REVENUE_REPORT' | trans }}</h3>
+      </div>
+      <p-chart type="bar" [data]="barChartData" [options]="barChartOptions" height="260px"></p-chart>
+    </div>
+
+    <!-- Top Treatments List with Progress Bars -->
+    <div class="clinic-card top-treatments-card">
+      <div class="card-top-bar">
+        <h3>{{ 'REPORTS.TOP_TREATMENTS' | trans }}</h3>
+      </div>
+
+      <div class="treatments-bars-list">
+        @for (item of topTreatments; track item.name) {
+          <div class="treatment-bar-item">
+            <div class="bar-info">
+              <span>{{ item.name }}</span>
+              <strong>{{ item.percent }}%</strong>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" [style.width.%]="item.percent" [style.background]="item.color"></div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom 4 KPI Cards (as in screenshot) -->
+  <div class="reports-kpi-grid">
+    <div class="clinic-card kpi-card">
+      <span class="kpi-label">{{ 'REPORTS.TOTAL_APPOINTMENTS' | trans }}</span>
+      <div class="kpi-values">
+        <h2>189</h2>
+        <span class="trend-badge positive"><i class="pi pi-arrow-up-right"></i> +12%</span>
+      </div>
+    </div>
+
+    <div class="clinic-card kpi-card">
+      <span class="kpi-label">{{ 'REPORTS.NEW_PATIENTS' | trans }}</span>
+      <div class="kpi-values">
+        <h2>48</h2>
+        <span class="trend-badge positive"><i class="pi pi-arrow-up-right"></i> +18%</span>
+      </div>
+    </div>
+
+    <div class="clinic-card kpi-card">
+      <span class="kpi-label">{{ 'REPORTS.CONVERSION_RATE' | trans }}</span>
+      <div class="kpi-values">
+        <h2>72%</h2>
+        <span class="trend-badge positive"><i class="pi pi-arrow-up-right"></i> +8%</span>
+      </div>
+    </div>
+
+    <div class="clinic-card kpi-card">
+      <span class="kpi-label">{{ 'REPORTS.NO_SHOW_RATE' | trans }}</span>
+      <div class="kpi-values">
+        <h2>6%</h2>
+        <span class="trend-badge negative"><i class="pi pi-arrow-down-right"></i> -2%</span>
+      </div>
+    </div>
+  </div>
+</div>

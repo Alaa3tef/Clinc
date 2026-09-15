@@ -1,0 +1,60 @@
+.staff-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  h1 { font-size: 24px; font-weight: 800; }
+  p { color: var(--text-muted); font-size: 13.5px; margin-top: 4px; }
+}
+
+.table-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-main);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 8px 16px;
+  margin-bottom: 1.25rem;
+  width: 320px;
+
+  i { color: var(--text-light); }
+  input { border: none; background: transparent; outline: none; width: 100%; font-size: 13px; }
+}
+
+.staff-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .staff-avatar-circle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+  }
+}
+
+.role-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+
+  &.doctor { background: #e3f2fd; color: #1976d2; }
+  &.technician { background: #fce4ec; color: #c2185b; }
+  &.nurse { background: #e8f5e9; color: #388e3c; }
+  &.receptionist { background: #fff8e1; color: #f57f17; }
+}

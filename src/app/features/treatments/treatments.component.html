@@ -1,0 +1,114 @@
+<div class="treatments-page">
+  <div class="page-header">
+    <div>
+      <h1>{{ 'TREATMENTS.TITLE' | trans }}</h1>
+      <p>{{ 'TREATMENTS.SUBTITLE' | trans }}</p>
+    </div>
+    <button class="btn-primary" (click)="openAddDialog()">
+      <i class="pi pi-plus"></i>
+      <span>{{ 'TREATMENTS.ADD_TREATMENT' | trans }}</span>
+    </button>
+  </div>
+
+  <div class="clinic-card">
+    <div class="table-search-bar">
+      <i class="pi pi-search"></i>
+      <input 
+        type="text" 
+        [placeholder]="'TREATMENTS.SEARCH' | trans" 
+        [ngModel]="searchQuery()" 
+        (ngModelChange)="searchQuery.set($event)" 
+      />
+    </div>
+
+    <div class="custom-table-wrapper">
+      <table class="clinic-table">
+        <thead>
+          <tr>
+            <th>{{ 'TREATMENTS.NAME' | trans }}</th>
+            <th>{{ 'TREATMENTS.CATEGORY' | trans }}</th>
+            <th>{{ 'TREATMENTS.DURATION' | trans }}</th>
+            <th>{{ 'TREATMENTS.PRICE' | trans }}</th>
+            <th>{{ 'TREATMENTS.STATUS' | trans }}</th>
+            <th>{{ 'COMMON.ACTIONS' | trans }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (t of filteredTreatments(); track t.id) {
+            <tr>
+              <td>
+                <div class="treatment-name-cell">
+                  <div class="treatment-icon">
+                    <i class="pi pi-sparkles"></i>
+                  </div>
+                  <strong>{{ t.name }}</strong>
+                </div>
+              </td>
+              <td>
+                <span class="category-pill" [ngClass]="t.category.toLowerCase()">
+                  {{ t.category }}
+                </span>
+              </td>
+              <td>{{ t.durationMinutes }} {{ 'COMMON.MIN' | trans }}</td>
+              <td>
+                <strong>{{ t.price | number }} {{ 'COMMON.EGP' | trans }}</strong>
+              </td>
+              <td>
+                <span class="status-badge" [ngClass]="t.status.toLowerCase()">
+                  {{ t.status }}
+                </span>
+              </td>
+              <td>
+                <button class="btn-outline-primary btn-sm">
+                  <i class="pi pi-pencil"></i> {{ 'COMMON.EDIT' | trans }}
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Add Treatment Dialog -->
+  <p-dialog 
+    [header]="'TREATMENTS.ADD_TREATMENT' | trans" 
+    [visible]="showAddDialog()" 
+    (visibleChange)="showAddDialog.set($event)"
+    [modal]="true" 
+    [style]="{ width: '450px' }"
+  >
+    <div class="dialog-content">
+      <div class="form-group">
+        <label>{{ 'TREATMENTS.NAME' | trans }} *</label>
+        <input type="text" [(ngModel)]="newTreatment.name" placeholder="e.g. Laser Hair Removal" />
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'TREATMENTS.CATEGORY' | trans }}</label>
+        <select [(ngModel)]="newTreatment.category">
+          <option value="Laser">Laser</option>
+          <option value="Skin">Skin</option>
+          <option value="Injectables">Injectables</option>
+          <option value="Body">Body</option>
+        </select>
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>{{ 'TREATMENTS.DURATION' | trans }} (min)</label>
+          <input type="number" [(ngModel)]="newTreatment.durationMinutes" />
+        </div>
+        <div class="form-group">
+          <label>{{ 'TREATMENTS.PRICE' | trans }} (EGP)</label>
+          <input type="number" [(ngModel)]="newTreatment.price" />
+        </div>
+      </div>
+    </div>
+
+    <div class="dialog-footer">
+      <button class="btn-secondary" (click)="showAddDialog.set(false)">{{ 'COMMON.CANCEL' | trans }}</button>
+      <button class="btn-primary" (click)="saveTreatment()">{{ 'COMMON.SAVE' | trans }}</button>
+    </div>
+  </p-dialog>
+</div>

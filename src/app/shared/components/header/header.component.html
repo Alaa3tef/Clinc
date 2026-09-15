@@ -1,0 +1,40 @@
+<header class="app-header">
+  <div class="header-left">
+    <div class="search-box">
+      <i class="pi pi-search"></i>
+      <input
+        type="text"
+        [placeholder]="'PATIENTS.SEARCH_PLACEHOLDER' | trans"
+        [(ngModel)]="searchQuery"
+      />
+    </div>
+  </div>
+
+  <div class="header-right">
+    <!-- Language Toggle (EN / AR) -->
+    <button class="lang-switch-btn" (click)="trans.toggleLanguage()" [title]="'Change language'">
+      <i class="pi pi-globe"></i>
+      <span>{{ trans.currentLang() === 'ar' ? 'English' : 'العربية' }}</span>
+    </button>
+
+    <!-- Notification Bell -->
+    <button class="icon-circle-btn" aria-label="Notifications">
+      <i class="pi pi-bell"></i>
+      <span class="notification-indicator"></span>
+    </button>
+
+    <!-- Doctor Profile Chip -->
+    <div class="doctor-profile-chip">
+      @if (clinic.currentUser()?.avatar) {
+        <img [src]="clinic.currentUser()?.avatar" alt="Profile" class="doctor-avatar" />
+      } @else {
+        <div class="doctor-avatar doctor-avatar-placeholder" aria-hidden="true"><i class="pi pi-user"></i></div>
+      }
+      <div class="doctor-meta">
+        <span class="doctor-name">{{ clinic.currentUser()?.name }}</span>
+        <span class="doctor-specialty">{{ clinic.currentUser()?.role }}</span>
+      </div>
+      <i class="pi pi-chevron-down profile-arrow"></i>
+    </div>
+  </div>
+</header>
